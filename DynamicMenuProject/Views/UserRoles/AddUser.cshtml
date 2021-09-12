@@ -1,0 +1,161 @@
+﻿@model DynamicMenuProject.Areas.Identity.Pages.Account.RegisterModel.InputModel
+@{
+    ViewBag.Title = "Add User";
+}
+<div class="row">
+    <div class="col-md-6">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">Create User</h3>
+            </div>
+            <form method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label asp-for="FirstName"></label>
+                    <input asp-for="FirstName" class="form-control" placeholder="FirstName">
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="LastName"></label>
+                    <input asp-for="LastName" class="form-control" placeholder="LastName">
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" class="form-control" placeholder="Email">
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ProfilePictureFile"></label>
+                    <input asp-for="ProfilePictureFile" class="form-control" type="file" />
+                    <span asp-validation-for="ProfilePictureFile" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CountryId"></label>
+                    <br />
+                    <select id="CountryId" asp-for="CountryId" class="form-control">
+                        <option value="">Select</option>
+                    </select>
+                    <span asp-validation-for="CountryId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label>State</label>
+                    <br />
+                    <select id="StateId" asp-for="StateId" class="form-control">
+                        <option value="">Select</option>
+                    </select>
+                    <span asp-validation-for="StateId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label>City</label>
+                    <br />
+                    <select id="CityId" asp-for="CityId" class="form-control">
+                        <option value="">Select</option>
+                    </select>
+                    <span asp-validation-for="CityId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Address1"></label>
+                    <input asp-for="Address1" class="form-control" placeholder="Address1">
+                    <span asp-validation-for="Address1" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Address2"></label>
+                    <input asp-for="Address2" class="form-control" placeholder="Address2">
+                    <span asp-validation-for="Address2" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password"></label>
+                    <input type="password" asp-for="Password" class="form-control" placeholder="Password">
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ConfirmPassword"></label>
+                    <input asp-for="ConfirmPassword" class="form-control" />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Create</button>
+                    <a asp-action="Index" class="btn btn-primary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(function () {
+            $.ajax({
+                url: '/Home/Country',
+                type: 'GET',
+                async: false,
+                dataType: 'json',
+                //contentType: 'application/json',
+                error: function (xhr) {
+                    alert('Error: ' + xhr);
+                },
+                success: function (result) {
+
+                    $.each(result, function (data, value) {
+                        $("#CountryId").append($("<option></option>").val(value.value).html(value.text));
+                    })
+                },
+
+            });
+
+
+            $("#CountryId").on("change", function () {
+                $("#StateId").empty();
+                $("#CityId").empty();
+                $.ajax({
+                    url: '/Home/GetStatesByCountryId',
+                    type: 'GET',
+                    async: true,
+                    data: {
+                        CountryId: $(this).val()
+                    },
+                    dataType: 'json',
+                    //contentType: 'application/json',
+                    error: function (xhr) {
+                        alert('Error: ' + xhr);
+                    },
+                    success: function (result) {
+
+                        //alert(result);
+                        $("#StateId").append($("<option>" + "Select State" + "</option>"));
+                        $.each(result, function (data, value) {
+                            //debugger;
+                            //alert(value);
+                            $("#StateId").append($("<option></option>").val(value.value).html(value.text));
+                        })
+                    },
+
+                });
+            });
+            $("#StateId").on("change", function () {
+                $("#CityId").empty();
+                $.ajax({
+                    url: '/Home/GetCitiesByStateId',
+                    type: 'GET',
+                    async: false,
+                    data: {
+                        StateId: $(this).val()
+                    },
+                    dataType: 'json',
+                    //contentType: 'application/json',
+                    error: function (xhr) {
+                        alert('Error: ' + xhr);
+                    },
+                    success: function (result) {
+                        $("#CityId").append($("<option>" + "Select City" + "</option>"));
+                        $.each(result, function (data, value) {
+                            $("#CityId").append($("<option></option>").val(value.value).html(value.text));
+                        })
+                    },
+
+                });
+            });
+        });
+    </script>
+}

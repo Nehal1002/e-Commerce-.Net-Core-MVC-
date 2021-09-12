@@ -1,0 +1,61 @@
+﻿@model IEnumerable<DynamicMenuProject.PayPalHelper.PayPalPaymentCreatedResponse>
+@using System.Linq;
+<h1>Success</h1>
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Success</title>
+</head>
+<body>
+    <h3>Transaction Details</h3>
+    <table id="idgrid" class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Intent</th>
+                <th>Cart</th>
+                <th>Transaction State</th>
+                <th>Refund</th>
+                <th>Invoice</th>
+            </tr>
+
+        </thead>
+        <tbody>
+            
+            @if (ViewBag.result != null)
+            {
+                var item = ViewBag.result;
+                var saleId = ViewBag.SaleId;
+            <tr>
+                <td>@item.id</td>
+                <td>@item.intent</td>
+                <td>@item.cart</td>
+                <td>@item.state</td>
+
+                <td>
+                    <a asp-controller="Cart" asp-action="Refund"
+                       asp-route-Id="@saleId">Refund</a>
+                </td>
+                <td>
+                    <a asp-controller="Cart" asp-action="Invoice"
+                       asp-route-Id="@item.id">Invoice</a>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>
+@section scripts{
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.25/af-2.3.7/datatables.min.css" />
+    <script src="~/js/CustomScript.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.25/af-2.3.7/datatables.min.js"></script>
+    <script>
+                    $(document).ready(function () {
+                        $("#MyDataTable").DataTable();
+                    }
+                    )
+    </script>
+}

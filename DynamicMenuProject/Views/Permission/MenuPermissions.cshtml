@@ -1,0 +1,108 @@
+﻿@model IEnumerable<DynamicMenuProject.View_Models.PermissionViewModel>
+    @{
+    ViewData["Title"] = "MenuPermissions";
+    }
+
+    <h1>MenuPermissions</h1>
+    <div class="card-header">
+        <label>Select Role</label>
+        @Html.DropDownList("RoleId", (IEnumerable<SelectListItem>)ViewBag.RolesList, "Select Role")
+        <button id="btnSave" class="btn btn-primary fa-pull-right">Save</button>
+    </div>
+    <div id="jstree">
+    </div>
+
+    @*@using (Html.BeginForm("Index", "Home", FormMethod.Post))
+{
+    <input type="hidden" name="selectedItems" id="selectedItems" />
+    <input type="submit" value="Submit" />
+}*@
+
+    @section scripts{
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
+
+
+        <script type="text/javascript">
+        $(document).ready(function () {
+            $('#jstree').on('changed.jstree', function (e, data) {
+                var i, j;
+                var postedItems = [];
+                for(i = 0, j = data.selected.length; i < j; i++) {
+
+                    //Fetch the Id.
+                    var id = data.selected[i];
+
+                    //Remove the ParentId.
+                    if(id.indexOf('-') != -1){
+                        id = id.split("-")[1];
+                    }
+
+                    //Add the Node to the JSON Array.
+                    postedItems.push({
+                        text: data.instance.get_node(data.selected[i]).text,
+                        id: id,
+                        parent: data.node.parents[0]
+                    });
+                }
+
+                //Serialize the JSON Array and save in HiddenField.
+                $('#selectedItems').val(JSON.stringify(postedItems));
+            }).jstree({
+                "core": {
+                    "themes": {
+                        "variant": "large"
+                    },
+                    "data": @Html.Raw(ViewBag.Json)
+                    },
+                "checkbox": {
+                    "keep_selected_style": false
+                },
+                "plugins": ["wholerow", "checkbox"],
+            });
+        });
+        </script>
+    }
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+    <script>
+
+    $(document).ready(function () {
+
+       $("#RoleId").on("change", function () {
+            var selectedId = $(this).val();
+            window.location.href = '@Url.Action("GetPermissions", "Permissions")' + '?RoleId=' + selectedId;
+        });
+
+        $("#btnSave").on('click', function (e) {
+            var RoleId = $('#RoleId').val();
+            var arr = [];
+            $('#idgrid').find('input[type="checkbox"]:checked').each(function () {
+                //this is the current checkbox
+                requestData= {
+                    MenuId: this.value,
+                    RoleId: RoleId
+                }
+                arr.push(requestData);
+            });
+
+            debugger;
+            $.ajax({
+                url: '/Permission/UpdatePermission',
+                type: 'POST',
+                data: JSON.stringify(arr),
+               dataType: 'json',
+               contentType: 'application/json',
+               error: function (xhr) {
+                    alert('Error: ' + xhr.statusText);
+                },
+                success: function (result) {
+                    alert(result);
+                },
+                //async: true,
+               // processData: false
+            });
+
+        });
+    });
+    </script>

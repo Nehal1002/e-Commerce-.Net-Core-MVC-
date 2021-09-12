@@ -1,0 +1,217 @@
+﻿@model DynamicMenuProject.View_Models.EditUserViewModel
+@{
+    ViewData["Title"] = "EditUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h1>Edit User</h1>
+<form method="post" class="mt-3" enctype="multipart/form-data">
+    <div class="form-group row">
+        <label asp-for="Email" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <input asp-for="Email" class="form-control">
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <label asp-for="FirstName" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <input asp-for="FirstName" class="form-control">
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+        <label asp-for="LastName" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <input asp-for="LastName" class="form-control">
+            <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
+        <label asp-for="ProfilePictureFile" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            @if (Model.ProfilePicture != null)
+            {
+                <img id="profilePicture" style="width:50px;height:50px; object-fit:cover" src="~/Upload/@Model.ProfilePicture">
+                <input asp-for="ProfilePictureFile" class="form-control" type="file" />
+                <span asp-validation-for="ProfilePictureFile" class="text-danger"></span>
+            }
+            else
+            {
+                <input asp-for="ProfilePictureFile" class="form-control" type="file" />
+                <span asp-validation-for="ProfilePictureFile" class="text-danger"></span>
+            }
+        </div>
+        <label asp-for="CountryId" class="col-sm-2 col-form-label"></label>
+
+        <div class="col-sm-10">
+
+            <select id="CountryId" asp-for="CountryId" class="form-control">
+                <option value="">Select Country</option>
+            </select>
+            <span asp-validation-for="CountryId" class="text-danger"></span>
+        </div>
+        <label asp-for="StateId" class="col-sm-2 col-form-label">State</label>
+
+        <div class="col-sm-10">
+
+            <select id="StateId" asp-for="StateId" class="form-control">
+                <option value="">Select State</option>
+            </select>
+            <span asp-validation-for="StateId" class="text-danger"></span>
+        </div>
+        <label asp-for="CityId" class="col-sm-2 col-form-label">City</label>
+        <div class="col-sm-10">
+
+
+            <select id="CityId" asp-for="CityId" class="form-control">
+                <option value="">Select City</option>
+            </select>
+            <span asp-validation-for="CityId" class="text-danger"></span>
+        </div>
+        <label asp-for="Address1" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+
+            <input asp-for="Address1" class="form-control">
+            <span asp-validation-for="Address1" class="text-danger"></span>
+        </div>
+        <label asp-for="Address2" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+
+            <input asp-for="Address2" class="form-control">
+            <span asp-validation-for="Address2" class="text-danger"></span>
+        </div>
+    </div>
+    @*<div asp-validation-summary="All" class="text-danger"></div>*@
+    <div class="form-group row">
+        <div class="col-sm-10">
+            <button type="submit" class="btn btn-primary">Update</button>
+            <a asp-action="Index" class="btn btn-primary">Cancel</a>
+        </div>
+    </div>
+</form>
+@section scripts{
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        $(function () {
+            // load country
+            $.ajax({
+                url: '/Home/Country',
+                type: 'GET',
+                async: false,
+                dataType: 'json',
+                //contentType: 'application/json',
+                error: function (xhr) {
+                    alert('Error: ' + xhr);
+                },
+                success: function (result) {
+                    $.each(result, function (data, value) {
+                        $("#CountryId").append($("<option></option>").val(value.value).html(value.text));
+                    })
+                    $("#CountryId").val(@Model.CountryId);
+                },
+            });
+
+
+            // load state
+            $.ajax({
+                url: '/Home/GetStatesByCountryId',
+                type: 'GET',
+                async: true,
+                data: {
+                    CountryId: @Model.CountryId
+                },
+                dataType: 'json',
+                //contentType: 'application/json',
+                error: function (xhr) {
+                    alert('Error: ' + xhr);
+                },
+                success: function (result) {
+                    //alert(result);
+                    //$("#StateId").append($("<option>" + "Select State" + "</option>"));
+                    $.each(result, function (data, value) {
+                        $("#StateId").append($("<option></option>").val(value.value).html(value.text));
+                        $("#StateId").val(@Model.StateId);
+                    });
+                }
+            });
+
+            // load city
+            $.ajax({
+                url: '/Home/GetCitiesByStateId',
+                type: 'GET',
+                async: false,
+                data: {
+                    StateId: @Model.StateId
+                },
+                dataType: 'json',
+                //contentType: 'application/json',
+                error: function (xhr) {
+                    alert('Error: ' + xhr);
+                },
+                success: function (result) {
+                    //$("#CityId").append($("<option>" + "Select City" + "</option>"));
+                    $.each(result, function (data, value) {
+                        $("#CityId").append($("<option></option>").val(value.value).html(value.text));
+                        $("#CityId").val(@Model.CityId);
+                    });
+
+                }
+            });
+        });
+
+        //CId change event
+        $("#CountryId").on("change", function () {
+            $.ajax({
+                url: '/Home/GetStatesByCountryId',
+                type: 'GET',
+                async: true,
+                data: {
+                    CountryId: $(this).val()
+                },
+                dataType: 'json',
+                //contentType: 'application/json',
+                error: function (xhr) {
+                    alert('Error: ' + xhr);
+                },
+                success: function (result) {
+                    debugger
+                    $("#StateId").empty();
+                    $("#CityId").empty();
+
+                    $("#StateId").append($("<option>" + "Select State" + "</option>"));
+                    $("#CityId").append($("<option>" + "Select City" + "</option>"));
+
+                    $.each(result, function (data, value) {
+                        $("#StateId").append($("<option></option>").val(value.value).html(value.text));
+                    });
+                },
+
+            });
+        });
+
+        //StateId change event
+        $("#StateId").on("change", function () {
+                                //$("#CityId").empty();
+            $.ajax({
+                url: '/Home/GetCitiesByStateId',
+                type: 'GET',
+                async: false,
+                data: {
+                    StateId: $(this).val()
+                },
+                dataType: 'json',
+                //contentType: 'application/json',
+                error: function (xhr) {
+                    alert('Error: ' + xhr);
+                },
+                success: function (result) {
+                    debugger
+                    $("#CityId").empty();
+                    $("#CityId").append($("<option>" + "Select city" + "</option>"));
+                    $.each(result, function (data, value) {
+                        $("#CityId").append($("<option></option>").val(value.value).html(value.text));
+                    });
+                },
+
+            });
+        });
+
+    </script>
+
+}
+

@@ -1,0 +1,59 @@
+﻿@model IEnumerable<DynamicMenuProject.View_Models.NewsViewModel>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/js/ckeditor/ckeditor.js"></script>
+<link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+<h1>Manage News</h1>
+<a class="btn btn-primary" style="width:auto"
+   asp-controller="News" asp-action="CreateNews">
+    Create News
+</a>
+<table class="table table-striped" id="MyDataTable">
+    <thead>
+        <tr>
+            <th>Serial No.</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Created At</th>
+            <th>Modified At</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{int index = 1;}
+        @foreach (var news in Model)
+        {
+            <tr>
+                <td>@index</td>
+                <td>@news.Title</td>
+                <td>@Html.Raw(@news.Description)</td>
+                <td>@news.CreatedAt</td>
+                <td>@news.ModifiedAt</td>
+                <td>
+                    <a asp-action="EditNews" asp-controller="News" asp-route-id="@news.Id" class="btn btn-primary">Edit</a>
+                </td>
+                <td>
+                    <a class="btn btn-danger" asp-controller="News" asp-action="DeleteNews" asp-route-id="@news.Id"
+                       onclick="return confirm('Are you sure you want to delete news : @news.Id')">Delete</a>
+                </td>
+            </tr>
+            index++;
+        }
+    </tbody>
+</table>
+@section scripts{
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.25/af-2.3.7/datatables.min.css" />
+    <script src="~/js/CustomScript.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.25/af-2.3.7/datatables.min.js"></script>
+    <script>$(document).ready(function () {
+            $("#MyDataTable").DataTable();
+            CKEDITOR.replace('#Description');
+
+        }
+        )</script>
+}

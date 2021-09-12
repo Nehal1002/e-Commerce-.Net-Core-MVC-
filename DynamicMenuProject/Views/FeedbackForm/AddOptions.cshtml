@@ -1,0 +1,35 @@
+﻿@model DynamicMenuProject.Models.AddOptionWithList
+@{
+    ViewData["Title"] = "AddOptions";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <form method="post">
+
+            <div class="form-group">
+                <label asp-for="Option"></label>
+                <input asp-for="Option" class="form-control" placeholder="Option ">
+                <span asp-validation-for="Option" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+
+        @if (Model.lstAddOption != null && Model.lstAddOption.Count() > 0)
+        {
+            <p>List of options :- </p>
+
+        }
+        @foreach (var item in Model.lstAddOption)
+        {
+            @item.Option;
+            <br />
+        }
+
+    </div>
+</div>
+
+@section scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

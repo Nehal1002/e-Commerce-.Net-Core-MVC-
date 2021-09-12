@@ -1,0 +1,91 @@
+﻿
+@model IEnumerable<DynamicMenuProject.View_Models.CategoryViewModel>
+    @{
+    ViewData["Title"] = "GetCategories";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    }
+    @if (ViewBag.successMessage != null)
+{
+    <div class="alert alert-success alert-dismissible">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>Success!</strong> @ViewBag.successMessage
+    </div>
+}
+    @if (Model.Any())
+{
+    <div class="col-md-12">
+        <div class="card">
+            <!-- /.card-header -->
+            <div class="card-header">
+                <a class="btn btn-primary" style="width:auto"
+                   asp-controller="Categories" asp-action="AddCategory">
+                    Create Category
+                </a>
+            </div>
+            <div class="card-body p-0">
+                <table class="table" id="MyDataTable">
+                    <thead>
+                        <tr>
+                            <th style="width: 10px">Id</th>
+                            <th>Name</th>
+                            <th>Path</th>
+                            <th>ParentId</th>
+                            <th>CategoryLevel</th>
+                            <th>CategoryGrpId</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var category in Model)
+                        {
+                        <tr>
+                            <td>@category.Id</td>
+                            <td>@category.CategoryName</td>
+                            <td>@category.Path</td>
+                            <td>@category.ParentId</td>
+                            <td>@category.CategoryLevel</td>
+                            <td>@category.CategoryGrpId</td>
+                            <td><a href="@Url.Action("EditCategory","Categories",new { Id=category.Id})" class="btn btn-primary">Edit</a></td>
+                            <td><a href="@Url.Action("DeleteCategory","Categories",new {Id=category.Id})" class="btn btn-danger">Delete</a></td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </div>
+}
+else
+{
+    <div class="card">
+        <div class="card-header">
+            No category created yet
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">
+                Use the button below to create a category
+            </h5>
+        </div>
+        <div class="card-footer">
+            <a class="btn btn-primary" style="width:auto"
+               asp-controller="Categories" asp-action="AddCategory">
+                Create Category
+            </a>
+        </div>
+    </div>
+}
+    @section scripts{
+        <script src="~/js/CustomScript.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.25/af-2.3.7/datatables.min.css" />
+        <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.25/af-2.3.7/datatables.min.js"></script>
+        <script>
+    $(document).ready(function () {
+                $("#MyDataTable").DataTable();
+            }
+            )</script>
+    }
+

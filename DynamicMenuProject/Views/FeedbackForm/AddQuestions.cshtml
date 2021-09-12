@@ -1,0 +1,39 @@
+﻿
+@using DynamicMenuProject.Models
+@model DynamicMenuProject.Models.Questions
+@{
+    ViewData["Title"] = "AddQuestions";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <form method="post">
+            <div class="card-body">
+
+                <div class="form-group">
+                    <label asp-for="Title"></label>
+                    <input asp-for="Title" class="form-control" placeholder="Title">
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Type"></label>
+                    <select asp-for="Type" class="form-control">
+                        <option value="@TitleType.TextBox">TextBox</option>
+                        <option value="@TitleType.TextArea">TextArea</option>
+                        <option value="@TitleType.RadioButton">RadioButton</option>
+                        <option value="@TitleType.CheckBox">CheckBox</option>
+                        <option value="@TitleType.DropDown">Dropdown</option>
+                    </select>
+                    <span asp-validation-for="Type" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button type="submit" class="btn btn-primary">Create</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

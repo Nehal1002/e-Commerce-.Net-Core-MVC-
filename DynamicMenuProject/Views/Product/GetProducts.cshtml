@@ -1,0 +1,72 @@
+﻿
+@model IEnumerable<DynamicMenuProject.View_Models.AddProductViewModel>
+@{
+    ViewData["Title"] = "GetProducts";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/js/ckeditor/ckeditor.js"></script>
+<link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+<h1>Manage Products</h1>
+<a class="btn btn-primary" style="width:auto"
+   asp-controller="Product" asp-action="AddProduct">
+    Create Product
+</a>
+<table class="table table-striped" id="MyDataTable">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Product Name</th>
+            <th>Price</th>
+            <th>Description</th>
+            <th>Image</th>
+            <th>isActive</th>
+            <th>isDeleted</th>
+            <th>CreatedAt</th>
+            <th>ModifiedAt</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @*@{int index = 1;}*@
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>@product.ProductId</td>
+                <td>@product.ProductName</td>
+                <td>@product.Price</td>
+                <td>@Html.Raw(@product.Description)</td>
+                <td>
+                    @if (product.Image != null)
+                    {
+                        <img style="width:50px;height:50px; object-fit:cover" src="~/Images/@product.Image">
+                    }
+                </td>
+                <td>@product.isActive</td>
+                <td>@product.isDeleted</td>
+                <td>@product.CreatedAt</td>
+                <td>@product.ModifiedAt</td>
+                <td>
+                    <a asp-action="EditProduct" asp-controller="Product" asp-route-ProductId="@product.ProductId" class="btn btn-primary">Edit</a>
+                </td>
+                <td>
+                    <a class="btn btn-danger" asp-controller="Product" asp-action="DeleteProduct" asp-route-Id="@product.ProductId"
+                       onclick="return confirm('Are you sure you want to delete product : @product.ProductId')">Delete</a>
+                </td>
+            </tr>
+            //index++;
+        }
+    </tbody>
+</table>
+@section scripts{
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.25/af-2.3.7/datatables.min.css" />
+    <script src="~/js/CustomScript.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.25/af-2.3.7/datatables.min.js"></script>
+    <script>$(document).ready(function () {
+            $("#MyDataTable").DataTable();
+            CKEDITOR.replace('#Description');
+
+        }
+        )</script>
+}

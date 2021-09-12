@@ -1,0 +1,124 @@
+﻿
+@{
+    ViewData["Title"] = "Contact";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h1>Contact</h1>
+<p>Email:- nehal.kanoongo@dotsquares.com</p>
+<p>Contact No.:-7742576860, 9829952437</p>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Add meta tags for mobile and IE -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title> PayPal Checkout Integration | Client Demo </title>
+</head>
+<body>
+    <!-- Set up a container element for the button -->
+    <div id="paypal-button-container"></div>
+    <!-- Include the PayPal JavaScript SDK -->
+
+    <script src="https://www.paypal.com/sdk/js?client-id=test&currency=USD"></script>
+    <script>
+
+        // Render the PayPal button into #paypal-button-container
+        paypal.Buttons({
+            
+            enableStandardCardFields: true,
+            createOrder: function (data, actions) {
+                return actions.order.create({
+                    intent: 'CAPTURE',
+                    payer: {
+                        name: {
+                            given_name: "PayPal",
+                            surname: "Customer"
+                        },
+                        address: {
+                            address_line_1: '123 ABC Street',
+                            address_line_2: 'Apt 2',
+                            admin_area_2: 'San Jose',
+                            admin_area_1: 'CA',
+                            postal_code: '95121',
+                            country_code: 'US'
+                        },
+                        email_address: "customer@domain.com",
+                        phone: {
+                            phone_type: "MOBILE",
+                            phone_number: {
+                                national_number: "14082508100"
+                            }
+                        }
+                    },
+                    purchase_units: [
+                        {
+                            amount: {
+                                value: '15.00',
+                                currency_code: 'USD'
+                            },
+                            shipping: {
+                                address: {
+                                    address_line_1: '2211 N First Street',
+                                    address_line_2: 'Building 17',
+                                    admin_area_2: 'San Jose',
+                                    admin_area_1: 'CA',
+                                    postal_code: '95131',
+                                    country_code: 'US'
+                                }
+                            },
+                        }
+                    ]
+                });
+            },
+
+            // Finalize the transaction
+            onApprove: function (data, actions) {
+                return actions.order.capture().then(function (orderData) {
+                    //debugger
+                    // Successful capture! For demo purposes:
+                    console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+                    var transaction = orderData.purchase_units[0].payments.captures[0];
+                    // var tests = JSON.stringify(orderData);
+                    //alert(JSON.stringify(orderData));
+                    //alert(transaction);
+                    //console.log(orderdata);
+
+
+
+                    //alert('Transaction ' + transaction.status + ': ' + transaction.id + '\n\nSee console for all available details');
+
+                    // Replace the above to show a success message within this page, e.g.
+                    const element = document.getElementById('paypal-button-container');
+                    element.innerHTML = '';
+                    element.innerHTML = '<h3>Thank you for your payment!</h3>';
+                                                                /* Or go to another URL:*/  actions.redirect('thank_you.html');
+
+
+                    $.ajax({
+                        url: '/PayPal/Transactions',
+                        type: 'GET',
+                        dataType: 'json',
+                        data: {
+                            transactionId: transaction.id, transactionStatus: transaction.status
+                        },
+                        contentType: "application/json; charset=utf-8",
+                        success: function (result) {
+                            alert(result);
+                        },
+                        error: function (xhr) {
+                            alert('Error: ' + xhr.statusText);
+                        }
+                    });
+                });
+            },
+
+        onCancel: function (data) {
+                // Show a cancel page, or return to cart
+
+            }
+        }).render('#paypal-button-container');</script>
+</body>
+</html>
+
+

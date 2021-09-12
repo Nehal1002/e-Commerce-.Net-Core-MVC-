@@ -1,0 +1,59 @@
+﻿
+@model DynamicMenuProject.View_Models.CategoryViewModel
+@{
+    ViewData["Title"] = "AddCategory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <!-- left column -->
+    <div class="col-md-6">
+        <!-- general form elements -->
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">Create Category</h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form method="post">
+                <div class="card-body">
+                    @*<div asp-validation-summary="All" class="text-danger">*@
+                </div>
+                <div class="form-group">
+                    @*<input asp-for="Id" hidden class="form-control">*@
+                    <label asp-for="CategoryName"></label>
+                    <input asp-for="CategoryName" class="form-control" placeholder="Name">
+                    <span asp-validation-for="CategoryName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Path"></label>
+                    <input asp-for="Path" class="form-control" placeholder="Path">
+                    <span asp-validation-for="Path" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ParentId"></label>
+                    <input asp-for="ParentId" class="form-control" placeholder="ParentId">
+                    <span asp-validation-for="ParentId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CategoryLevel"></label>
+                    <input asp-for="CategoryLevel" class="form-control" placeholder="CategoryLevel">
+                    <span asp-validation-for="CategoryLevel" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CategoryGrpId"></label>
+                    <input asp-for="CategoryGrpId" class="form-control" placeholder="CategoryGrpId">
+                    <span asp-validation-for="CategoryGrpId" class="text-danger"></span>
+                </div>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+            <button type="submit" class="btn btn-primary">Create</button>
+            <a href="/Categories/GetCategories" type="submit" class="btn btn-primary">Cancel</a>
+        </div>
+        </form>
+    </div>
+</div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

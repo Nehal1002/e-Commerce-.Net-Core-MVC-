@@ -1,0 +1,41 @@
+﻿@model IEnumerable<DynamicMenuProject.View_Models.FeedbackFormViewModel>
+
+@{
+    ViewData["Title"] = "ViewDetailsPdf";
+    Layout = null;
+}
+<html>
+<head>
+    <style></style>
+    <img src="https://ems.dotsquares.com/content/images/logo.png" align="left" style="width: 100%; max-width: 300px" />
+
+    <h1 align="right">@Model.FirstOrDefault().UserName</h1>
+</head>
+
+<body>
+
+
+    <p>
+        @Model.FirstOrDefault().SubmitDate
+
+    </p>
+    @foreach (var item in Model)
+    {
+
+        <p>
+            Question:
+        </p>
+        <p>
+            @item.Question
+        </p>
+        <p>
+            Answer:
+        </p>
+        <p>
+            @item.Answer
+        </p>
+        <p>@item.Options</p>
+    }
+</body>
+</html>
+

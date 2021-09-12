@@ -1,0 +1,146 @@
+﻿
+@model DynamicMenuProject.View_Models.AddProductViewModel
+@{
+    ViewData["Title"] = "AddProduct";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/js/ckeditor/ckeditor.js"></script>
+<link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+<div class="row">
+    <!-- left column -->
+    <div class="col-md-6">
+        <!-- general form elements -->
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">Add Product</h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form method="post" enctype="multipart/form-data">
+                <div class="card-body">
+                    @*<div asp-validation-summary="All" class="text-danger">*@
+                </div>
+                <div class="form-group">
+                    @*<input asp-for="ProductId" hidden class="form-control">*@
+                    <label asp-for="ProductName"></label>
+                    <input asp-for="ProductName" class="form-control" placeholder="Name">
+                    <span asp-validation-for="ProductName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Price"></label>
+                    <input asp-for="Price" class="form-control" placeholder="Price">
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description"></label>
+                    <textarea id="Description" class="ckeditor" name="Description" rows="200"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ImageFile"></label>
+                    <input asp-for="ImageFile" class="form-control" type="file" />
+                    <span asp-validation-for="ImageFile" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="isActive"></label>
+                    <input asp-for="isActive" class="form-control" placeholder="isActive">
+                    <span asp-validation-for="isActive" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="isDeleted"></label>
+                    <input asp-for="isDeleted" class="form-control" placeholder="isActive">
+                    <span asp-validation-for="isDeleted" class="text-danger"></span>
+                </div>
+                @*<div class="form-group">
+                    <label asp-for="CreatedAt"></label>
+                    <input asp-for="CreatedAt" class="form-control" placeholder="isActive">
+                    <span asp-validation-for="CreatedAt" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ModifiedAt"></label>
+                    <input asp-for="ModifiedAt" class="form-control" placeholder="isActive">
+                    <span asp-validation-for="ModifiedAt" class="text-danger"></span>
+                </div>*@
+                <div class="form-group">
+                    <label asp-for="CategoryId"></label>
+                    <br />
+                    <select id="CategoryId" asp-for="CategoryId" class="form-control">
+                        <option value="">Select</option>
+                    </select>
+                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="SubCategoryId"></label>
+
+                    <br />
+                    <select id="SubCategoryId" asp-for="SubCategoryId" class="form-control">
+                        <option value="">Select</option>
+                    </select>
+                    <span asp-validation-for="SubCategoryId" class="text-danger"></span>
+                </div>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+            <button type="submit" class="btn btn-primary">Create</button>
+            <a href="/Product/GetProducts" type="submit" class="btn btn-primary">Cancel</a>
+        </div>
+        </form>
+    </div>
+</div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(function () {
+            $.ajax({
+                url: '/Product/Category',
+                type: 'GET',
+                async: false,
+                dataType: 'json',
+                //contentType: 'application/json',
+                error: function (xhr) {
+                    alert('Error: ' + xhr);
+                },
+                success: function (result) {
+
+                    $.each(result, function (data, value) {
+                        debugger;
+                        $("#CategoryId").append($("<option></option>").val(value.value).html(value.text));
+                    })
+                },
+
+            });
+
+
+            $("#CategoryId").on("change", function () {
+                $("#SubCategoryId").empty();
+                $.ajax({
+                    url: '/Product/GetSubCategoryIdByCategoryId',
+                    type: 'GET',
+                    async: true,
+                    data: {
+                        CategoryId: $(this).val()
+                    },
+                    dataType: 'json',
+                    //contentType: 'application/json',
+                    error: function (xhr) {
+                        alert('Error: ' + xhr);
+                    },
+                    success: function (result) {
+
+                        //alert(result);
+                        $("#SubCategoryId").append($("<option>" + "Select Sub-Category" + "</option>"));
+                        $.each(result, function (data, value) {
+                            debugger;
+                            //alert(value);
+                            $("#SubCategoryId").append($("<option></option>").val(value.value).html(value.text));
+                        })
+                    },
+
+                });
+            });
+        });
+    </script>
+}
+

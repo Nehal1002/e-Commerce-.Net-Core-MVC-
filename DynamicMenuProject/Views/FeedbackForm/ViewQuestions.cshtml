@@ -1,0 +1,65 @@
+﻿
+@model IEnumerable<DynamicMenuProject.View_Models.QuestionsViewModel>
+@{
+    ViewData["Title"] = "ViewQuestions";
+}
+@if (ViewBag.successMessage != null)
+{
+    <div class="alert alert-success alert-dismissible">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>Success!</strong> @ViewBag.successMessage
+    </div>
+}
+@if (Model.Any())
+{
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <a class="btn btn-primary" style="width:auto" asp-controller="FeedbackForm" asp-action="AddQuestions">
+                    Add Question
+                </a>
+            </div>
+            <div class="card-body p-0">
+                <table class="table" id="MyDataTable">
+                    <thead>
+                        <tr>
+                            <th>Serial No.</th>
+                            <th>Title</th>
+                            <th>Type</th>
+                            <th>Add Options</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{int count = 1;}
+                        @foreach (var question in Model)
+                        {
+                            <tr>
+                                <td>@count</td>
+                                <td>@question.Title</td>
+                                <td>@question.Type</td>
+                                <td>
+                                    @if (question.Type == TitleType.RadioButton.ToString() || question.Type == TitleType.DropDown.ToString() || question.Type == TitleType.CheckBox.ToString())
+                                    {
+                                        <a asp-controller="FeedbackForm" asp-action="AddOptions" asp-route-Id="@question.Id"
+                                           class="btn btn-link">Add Options</a>
+                                    }
+                                </td>
+                            </tr>
+                            count++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+@section scripts{
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.25/af-2.3.7/datatables.min.css" />
+    <script src="~/js/CustomScript.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.25/af-2.3.7/datatables.min.js"></script>
+    <script>
+    $(document).ready(function () {
+            $("#MyDataTable").DataTable();
+        }
+        )</script>
+}

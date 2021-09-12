@@ -1,0 +1,101 @@
+﻿@model List<DynamicMenuProject.View_Models.CartNewViewModel>
+@{
+    ViewData["Title"] = "CartNew";
+    Layout = "~/Views/Shared/_NormalLayout.cshtml";
+}
+
+<h1>Review your cart</h1>
+Total : @ViewBag.cartTotal
+<a asp-controller="CartNew" asp-action="CreateOrder">Checkout>></a>
+<table class="table table-striped" id="MyDataTable">
+    <thead>
+        <tr>
+            <th>Product Name</th>
+            <th>Product Image</th>
+            <th>Price(each)</th>
+            <th>Quantity</th>
+            <th>Sub Total</th>
+            <th>Remove From Cart</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>@product.ProductName</td>
+                <td>
+                    @if (product.Image != null)
+                    {
+                        <img style="width:50px;height:50px; object-fit:cover" src="~/Images/@product.Image">
+                    }
+                </td>
+                <td>@product.Price</td>
+                <td>
+                    <a asp-controller="CartNew" asp-action="SubtractQuantity" asp-route-Quantity="@product.Quantity"
+                       asp-route-productId="@product.ProductId" class="btn btn-primary">-</a>
+                    @product.Quantity
+                    <a asp-controller="CartNew" asp-action="AddQuantityNew" asp-route-Quantity="@product.Quantity"
+                       asp-route-productId="@product.ProductId" class="btn btn-primary">+</a>
+                </td>
+                <td>@product.TotalAmount</td>
+                <td><a asp-controller="CartNew" asp-action="RemoveFromCart" asp-route-productId="@product.ProductId">Remove From Cart</a></td>
+                @*<td><button type="submit" onclick="addtocart(@product.ProductId)">Remove From Cart</button></td>*@
+            </tr>
+        }
+    </tbody>
+
+</table>
+@section scripts{
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.25/af-2.3.7/datatables.min.css" />
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.25/af-2.3.7/datatables.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+    <script>
+        function addtocart(PId) {
+
+            debugger;
+            $.ajax({
+                url: '/CartNew/RemoveFromCart',
+                type: 'GET',
+                //data: JSON.stringify(arr),
+                data: {
+                    productId: parseInt(PId)
+                },
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                error: function (xhr) {
+                    alert('Error: ' + xhr.statusText);
+                },
+                success: function (result) {
+                    alert(result);
+                },
+                //async: true,
+                // processData: false
+            });
+        }
+        function addquantity(Quantity, PId) {
+
+            debugger;
+            $.ajax({
+                url: '/CartNew/AddQuantity',
+                type: 'GET',
+                //data: JSON.stringify(arr),
+                data: {
+                    productId: parseInt(PId),
+                    Quantity: parseInt(Quantity)
+                },
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                error: function (xhr) {
+                    alert('Error: ' + xhr.statusText);
+                },
+                success: function (result) {
+                    alert(result);
+                },
+                //async: true,
+                // processData: false
+            });
+        }
+    </script>
+}
+

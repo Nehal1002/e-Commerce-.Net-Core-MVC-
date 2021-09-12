@@ -1,0 +1,15 @@
+﻿@model List<DynamicMenuProject.View_Models.NewsViewModel>
+<h1>Top News</h1>
+@{int index = 1;}
+@foreach (var item in Model)
+{
+    <div class="card border-info mb-3" style="max-width: 18rem;">
+        <div class="card-header" align="center">News @index</div>
+        <div class="card-body text-info">
+            <h5 class="card-title">@item.Title</h5>
+            <p class="card-text">@Html.Raw(@item.Description)</p>
+        </div>
+    </div>
+    index++;
+}
+

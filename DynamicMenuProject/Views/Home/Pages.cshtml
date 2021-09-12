@@ -1,0 +1,10 @@
+﻿@model DynamicMenuProject.Models.CMSItems
+@{
+    ViewData["Title"] = @Model.PageName;
+    Layout = "~/Views/Shared/_NormalLayout.cshtml";
+}
+
+<h1>@Model.PageName</h1>
+<img style="width:350px;height:350px; object-fit:cover" src="~/Images/@Model.BannerImage">
+
+@Model.Description;

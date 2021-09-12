@@ -1,0 +1,45 @@
+﻿@model IEnumerable<DynamicMenuProject.View_Models.FeedbackFormViewModel>
+@{
+    ViewData["Title"] = "ManageReports";
+}
+
+<h1>ManageReports</h1>
+<table class="table table-striped" id="MyDataTable">
+    <thead>
+        <tr>
+            <th>Serial No.</th>
+            <th>User Name</th>
+            <th>Feedback Submit Date</th>
+            <th>Details</th>
+            <th>Download Pdf</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{int index = 1;}
+        @foreach (var user in Model)
+        {
+        <tr>
+            <td>@index</td>
+            <td>@user.UserName</td>
+            <td>@user.SubmitDate</td>
+            <td>
+                <a class="btn btn-primary" asp-controller="FeedbackForm" asp-action="ViewDetails" asp-route-Id="@user.UserId">View</a>
+            </td>
+            <td>
+                <a class="btn btn-primary" asp-controller="FeedbackForm" asp-action="ViewDetailsPdf" asp-route-Id="@user.UserId">Download</a>
+            </td>
+        </tr>
+            index++;
+        }
+    </tbody>
+</table>
+@section scripts{
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.25/af-2.3.7/datatables.min.css" />
+    <script src="~/js/CustomScript.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.25/af-2.3.7/datatables.min.js"></script>
+    <script>
+    $(document).ready(function () {
+            $("#MyDataTable").DataTable();
+        }
+        )</script>
+}
