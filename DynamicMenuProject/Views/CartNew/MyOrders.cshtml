@@ -8,43 +8,53 @@
 <h1>MyOrders</h1>
 @foreach (var item in Model)
 {
-    @item.OrderId<br />
+    @*@item.OrderId<br />
     @item.OrderStatus<br />
-    @item.OrderDate<br />
+    @item.OrderDate<br />*@
+    <div class="card border-info mb-3" style="max-width: 50rem;">
+        <div class="card-header" align="center">Order Id: @item.OrderId</div>
+        <div class="card-body text-info">
+            <h5 class="card-title">Order Status:  @item.OrderStatus</h5>
+            <h5 class="card-title">OrderDate:  @item.OrderDate</h5>
+            <p class="card-text">
 
+                <table class="table table-striped" id="MyDataTable">
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Image</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Sub Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var product in item.orderDetailsViewModel)
+                        {
+                            <tr>
+                                <td>@product.ProductName</td>
+                                <td>
+                                    @if (product.Image != null)
+                                    {
+                                        <img style="width:50px;height:50px; object-fit:cover" src="~/Images/@product.Image">
+                                    }
+                                </td>
+                                <td>
+                                    @product.Price
+                                </td>
+                                <td>
+                                    @product.Quantity
+                                </td>
+                                <td>@Html.Raw(@product.Price * @product.Quantity)</td>
+                            </tr>
+                        }
+                    </tbody>
 
-@*Total : @ViewBag.cartTotal*@
-<table class="table table-striped" id="MyDataTable">
-    <thead>
-        <tr>
-            <th>Product Name</th>
-            <th>Image</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Sub Total</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var product in item.orderDetailsViewModel)
-        {
-            <tr>
-                <td>@product.ProductName</td>
-                <td>
-                    @if (product.Image != null)
-                    {
-                        <img style="width:50px;height:50px; object-fit:cover" src="~/Images/@product.Image">
-                    }
-                </td>
-                <td>
-                    @product.Price
-                </td>
-                <td>
-                    @product.Quantity
-                </td>
-                <td>@Html.Raw(@product.Price*@product.Quantity)</td>
-            </tr>
-        }
-    </tbody>
+                </table>
+            </p>
+        </div>
+    </div>
 
-</table>
+    @*Total : @ViewBag.cartTotal*@
+    
 }

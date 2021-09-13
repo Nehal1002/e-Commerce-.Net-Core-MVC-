@@ -21,15 +21,10 @@
     </head>
     <div class="container-fluid">
         <div class="row">
-            @{
-                foreach (var item in Model.GroupBy(m => m.CategoryGrpId).Distinct().ToList())
+            @{ foreach (var firstItem in Model)
                 {
-
-                    foreach (var firstItem in (Model.Where(s => s.CategoryGrpId == item.FirstOrDefault().CategoryGrpId).ToList()))
+                    @if (firstItem.Path == null)
                     {
-                        @if (string.IsNullOrEmpty(firstItem.Path))
-                        {
-
                             <ul class="menu-siderbar nav flex-column">
                                 <li class="nav-item open">
                                     <a href="@firstItem.Path/Home/Products/@firstItem.Id" class="nav-link nav-link-parent">
@@ -40,17 +35,48 @@
                                         {
                                             <li class="nav-item">
                                                 <a href="@secondItem.Path/@secondItem.Id" class="nav-link">
-                                                    <i class="menu-icon fa fa-bolt"></i> @secondItem.CategoryName
+
+                                                    <i class="far fa-circle nav-icon"></i>
+                                                    <p>@secondItem.CategoryName</p>
                                                 </a>
-                                            </li>
+                                                </li>
                                         }
-                                    </ul>
+                                        </ul>
                                 </li>
                             </ul>
                         }
+                }
+            }
+            @*@{
+            foreach (var item in Model)
+            {
+
+                foreach (var firstItem in (Model.Where(s => s.CategoryGrpId == item.FirstOrDefault().CategoryGrpId).ToList()))
+                {
+                    @if (string.IsNullOrEmpty(firstItem.Path))
+                    {
+
+                        <ul class="menu-siderbar nav flex-column">
+                            <li class="nav-item open">
+                                <a href="@firstItem.Path/Home/Products/@firstItem.Id" class="nav-link nav-link-parent">
+                                    <i class="menu-icon fa fa-th"></i> @firstItem.CategoryName
+                                </a>
+                                <ul class="menu-siderbar-child nav flex-column">
+                                    @foreach (var secondItem in (Model.Where(s => s.ParentId == firstItem.Id).ToList()))
+                                    {
+                                        <li class="nav-item">
+                                            <a href="@secondItem.Path/@secondItem.Id" class="nav-link">
+                                                <i class="menu-icon fa fa-bolt"></i> @secondItem.CategoryName
+                                            </a>
+                                        </li>
+                                    }
+                                </ul>
+                            </li>
+                        </ul>
                     }
                 }
             }
+        }*@
         </div>
     </div>
 </html>

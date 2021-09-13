@@ -13,7 +13,5 @@ namespace DynamicMenuProject.Models
         public string CategoryName { get; set; }
         public string Path { get; set; }
         public int ParentId { get; set; }
-        public int CategoryLevel { get; set; }
-        public int CategoryGrpId { get; set; }
     }
 }

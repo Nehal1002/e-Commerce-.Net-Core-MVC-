@@ -73,41 +73,31 @@ namespace DynamicMenuProject.Controllers
         public IActionResult Products(int Id)
         {
             var PId = _context.Categories.Where(y => y.ParentId == 0);
-       
             if (Id == 0)
             {
-                ViewBag.product = _context.ProductNew.ToList();
-            }
-            else if(PId.FirstOrDefault().Id==Id)
-            {
-                //Condition to be done...
-                //var category = _context.Categories.Where(c => c.ParentId == Id).FirstOrDefault().Id;
-                
-                //ViewBag.product = _context.ProductNew.Where(y => y.SubCategoryId == category);
-                ViewBag.product = (from c in _context.Categories.Where(c => c.ParentId == Id)
-                                   join p in _context.ProductNew on c.Id equals p.SubCategoryId select p).ToList();
+                ViewBag.product = _context.ProductNew.Where(p=>p.isActive==true).ToList();
             }
             else
             {
-                ViewBag.product = _context.ProductNew.Where(x => x.SubCategoryId == Id).ToList();
+                foreach (var item in PId)
+                {
+                    if (item.Id == Id)
+                    {
+                        ViewBag.product = (from c in _context.Categories.Where(c => c.ParentId == Id)
+                                           join p in _context.ProductNew.Where(x=>x.isActive==true) on c.Id equals p.SubCategoryId
+                                           select p).ToList();
+                    }
+                    else
+                    {
+                        ViewBag.product = _context.ProductNew.Where(x => x.SubCategoryId == Id && x.isActive==true).ToList();
+                    }
+                }
             }
-            //else
-            //{
-            //    //    var z = _context.Categories.Where(y => y.ParentId == 0 && y.Id==Id);
-            //    //    if (z == null)
-            //    //    {
-            //    ViewBag.product = _context.ProductNew.Where(x => x.SubCategoryId == Id).ToList();
-            //    //}
-            //    //    else
-            //    //    {
-            //    //        ViewBag.product = _context.Categories.Where(x => x.ParentId == Id).ToList();
-            //    //    }
-            //    //}
-            //}
+            
             return View();
         }
 
-        
+
 
         //public IActionResult ProductsNew(int Id)
         //{
@@ -131,7 +121,9 @@ namespace DynamicMenuProject.Controllers
         //    }
         //    return View(p);
         //}
+
         
+
 
         [AllowAnonymous]
         public IActionResult AccessDenied()
@@ -176,7 +168,7 @@ namespace DynamicMenuProject.Controllers
                 Select(x => new { value = x.StateId, text = x.StateName }).ToList();
             return Json(sta);
         }
-
+        
         [AllowAnonymous]
         public JsonResult GetCitiesByStateId(int StateId)
         {
@@ -184,6 +176,37 @@ namespace DynamicMenuProject.Controllers
                 Select(x => new { value = x.CityId, text = x.CityName }).ToList();
             return Json(city);
         }
+
+
+        [AllowAnonymous]
+        public JsonResult Category(int productId)
+        {
+            var sub = (from p in _context.Categories
+                       where p.ParentId==0
+                       select new { value = p.Id, text = p.CategoryName }).ToList();
+   
+            return Json(sub);
+        }
+
+
+        [AllowAnonymous]
+        public JsonResult GetSubCategoryByCategory(int CategoryId)
+        {
+            var sta = _context.Categories.Where(x => x.ParentId == CategoryId).
+                Select(x => new { value = x.Id, text = x.CategoryName }).ToList();
+            return Json(sta);
+        }
+
+
+
+
+
+
+
+
+
+
+
 
         public IActionResult TreeView()
         {

@@ -1,0 +1,51 @@
+﻿@model List<DynamicMenuProject.View_Models.OrderViewModel>
+
+@{
+    ViewData["Title"] = "AdminOrders";
+    Layout = "~/Views/Shared/_NormalLayout.cshtml";
+}
+
+<h1>MyOrders</h1>
+@foreach (var item in Model)
+{
+    @item.OrderId<br />
+    @item.OrderStatus<br />
+    @item.OrderDate<br />
+    @item.UniqueId<br />
+    @item.CustomerId
+
+    @*Total : @ViewBag.cartTotal*@
+    <table class="table table-striped" id="MyDataTable">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Image</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Sub Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in item.orderDetailsViewModel)
+            {
+                <tr>
+                    <td>@product.ProductName</td>
+                    <td>
+                        @if (product.Image != null)
+                        {
+                            <img style="width:50px;height:50px; object-fit:cover" src="~/Images/@product.Image">
+                        }
+                    </td>
+                    <td>
+                        @product.Price
+                    </td>
+                    <td>
+                        @product.Quantity
+                    </td>
+                    <td>@Html.Raw(@product.Price * @product.Quantity)</td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+}

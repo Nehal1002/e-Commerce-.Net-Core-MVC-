@@ -27,20 +27,18 @@ namespace DynamicMenuProject.ViewComponents
             //var Role = _context.UserRoles.FirstOrDefault(u => u.UserId == userId);
             //if (Role != null)
             //{
-              //  var RoleId = Guid.Parse(Role.RoleId);
+            //  var RoleId = Guid.Parse(Role.RoleId);
 
-                var result = (from Categories in _context.Categories
+            var result = (from Categories in _context.Categories
                               //join Permissions in _context.MenuPermissions.Where(r => r.RoleId == RoleId)
                               //on Menus.Id equals Permissions.MenuId
-                              select new CategoryViewModel
-                              {
-                                  Id = Categories.Id,
-                                  CategoryName = Categories.CategoryName,
-                                  Path = Categories.Path,
-                                  ParentId = Categories.ParentId,
-                                  CategoryLevel = Categories.CategoryLevel,
-                                  CategoryGrpId = Categories.CategoryGrpId
-                              }).ToList().OrderBy(m => m.CategoryGrpId);
+                          select new CategoryViewModel
+                          {
+                              Id = Categories.Id,
+                              CategoryName = Categories.CategoryName,
+                              Path = Categories.Path,
+                              ParentId = Categories.ParentId,
+                          }).ToList();
                 return View(result);
                 // TODO: Fill menu with data here
             //}

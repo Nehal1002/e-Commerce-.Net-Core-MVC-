@@ -408,5 +408,37 @@ namespace DynamicMenuProject.Controllers
             }
             return View(listOrder);
         }
+
+        public IActionResult AdminOrders()
+        {
+            List<OrderViewModel> listOrder = new List<OrderViewModel>();
+            var orders = _context.OrderNew.ToList();
+            foreach (var order in orders)
+            {
+                OrderViewModel odr = new OrderViewModel();
+                odr.OrderId = order.OrderId;
+                odr.CustomerId = order.CustomerId;
+                odr.OrderStatus = order.OrderStatus;
+                odr.UniqueId = order.UniqueId;
+                odr.OrderDate = order.OrderDate;
+
+                var orderDetail = _context.OrderDetailsNew.Where(x => x.OrderId == odr.OrderId).ToList();
+                List<OrderDetailsViewModel> od = new List<OrderDetailsViewModel>();
+                foreach (var product in orderDetail)
+                {
+                    OrderDetailsViewModel orderDlItem = new OrderDetailsViewModel();
+                    orderDlItem.OrderId = product.OrderId;
+                    orderDlItem.ProductId = product.ProductId;
+                    orderDlItem.Image = _context.ProductNew.Where(c => c.ProductId == product.ProductId).FirstOrDefault().Image;
+                    orderDlItem.ProductName = _context.ProductNew.Where(c => c.ProductId == product.ProductId).FirstOrDefault().ProductName;
+                    orderDlItem.Price = product.Price;
+                    orderDlItem.Quantity = product.Quantity;
+                    od.Add(orderDlItem);
+                }
+                odr.orderDetailsViewModel = od;
+                listOrder.Add(odr);
+            }
+            return View();
+        }
     }
 }

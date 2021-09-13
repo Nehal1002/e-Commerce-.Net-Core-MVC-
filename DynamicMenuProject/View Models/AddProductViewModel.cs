@@ -26,7 +26,6 @@ namespace DynamicMenuProject.View_Models
         [Required(ErrorMessage = "Image is required.")]
         public IFormFile ImageFile { get; set; }
         public bool isActive { get; set; }
-        public bool isDeleted { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
 
@@ -36,5 +35,6 @@ namespace DynamicMenuProject.View_Models
         [Required(ErrorMessage = "Sub Category is required.")]
         public int SubCategoryId { get; set; }
         public string UserId { get; set; }
+        
     }
 }

@@ -7,6 +7,7 @@ using DynamicMenuProject.Helpers;
 using DynamicMenuProject.Models;
 using DynamicMenuProject.View_Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace DynamicMenuProject.Controllers
 {
@@ -36,8 +37,6 @@ namespace DynamicMenuProject.Controllers
                 mvm.CategoryName = item.CategoryName;
                 mvm.Path = item.Path;
                 mvm.ParentId = item.ParentId;
-                mvm.CategoryLevel = item.CategoryLevel;
-                mvm.CategoryGrpId = item.CategoryGrpId;
 
                 lstmodel.Add(mvm);
             }
@@ -62,8 +61,6 @@ namespace DynamicMenuProject.Controllers
                 categoryModel.CategoryName = model.CategoryName;
                 categoryModel.Path = model.Path;
                 categoryModel.ParentId = model.ParentId;
-                categoryModel.CategoryLevel = model.CategoryLevel;
-                categoryModel.CategoryGrpId = model.CategoryGrpId;
 
                 _context.Categories.Add(categoryModel);
                 _context.SaveChanges();
@@ -85,8 +82,6 @@ namespace DynamicMenuProject.Controllers
                 mvm.CategoryName = category.CategoryName;
                 mvm.Path = category.Path;
                 mvm.ParentId = category.ParentId;
-                mvm.CategoryLevel = category.CategoryLevel;
-                mvm.CategoryGrpId = category.CategoryGrpId;
             }
             return View(mvm);
         }
@@ -102,8 +97,6 @@ namespace DynamicMenuProject.Controllers
                     category.CategoryName = model.CategoryName;
                     category.Path = model.Path;
                     category.ParentId = model.ParentId;
-                    category.CategoryLevel = model.CategoryLevel;
-                    category.CategoryGrpId = model.CategoryGrpId;
 
                     _context.Entry(category).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                     _context.SaveChanges();
@@ -127,6 +120,21 @@ namespace DynamicMenuProject.Controllers
 
             return RedirectToAction("GetCategories");
 
+        }
+
+
+        public JsonResult IsCategoryNameExist(string CategoryName, int? Id)
+        {
+            var validateName = _context.Categories.FirstOrDefault(x => x.CategoryName == CategoryName && x.Id != Id);
+
+            if (validateName != null)
+            {
+                return Json(false, new JsonSerializerSettings());
+            }
+            else
+            {
+                return Json(true, new JsonSerializerSettings());
+            }
         }
     }
 }

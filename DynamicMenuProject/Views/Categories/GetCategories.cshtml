@@ -31,8 +31,6 @@
                             <th>Name</th>
                             <th>Path</th>
                             <th>ParentId</th>
-                            <th>CategoryLevel</th>
-                            <th>CategoryGrpId</th>
                             <th></th>
                             <th></th>
                         </tr>
@@ -45,8 +43,6 @@
                             <td>@category.CategoryName</td>
                             <td>@category.Path</td>
                             <td>@category.ParentId</td>
-                            <td>@category.CategoryLevel</td>
-                            <td>@category.CategoryGrpId</td>
                             <td><a href="@Url.Action("EditCategory","Categories",new { Id=category.Id})" class="btn btn-primary">Edit</a></td>
                             <td><a href="@Url.Action("DeleteCategory","Categories",new {Id=category.Id})" class="btn btn-danger">Delete</a></td>
                         </tr>

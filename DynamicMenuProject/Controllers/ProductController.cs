@@ -49,7 +49,6 @@ namespace DynamicMenuProject.Controllers
                 mvm.Price = item.Price;
                 mvm.Description = item.Description;
                 mvm.isActive = item.isActive;
-                mvm.isDeleted = item.isDeleted;
                 mvm.CreatedAt = item.CreatedAt;
                 mvm.ModifiedAt = item.ModifiedAt;
                 mvm.Image = item.Image;
@@ -78,9 +77,9 @@ namespace DynamicMenuProject.Controllers
                 productModel.Price = model.Price;
                 productModel.Description = model.Description;
                 productModel.isActive = model.isActive;
-                productModel.isDeleted = model.isDeleted;
                 productModel.CreatedAt = DateTime.Now;
                 productModel.ModifiedAt = DateTime.Now;
+                productModel.CategoryId = model.CategoryId;
                 productModel.SubCategoryId = model.SubCategoryId;
                 productModel.UserId = _userManager.GetUserId(HttpContext.User);
                 if (model.ImageFile != null)
@@ -116,11 +115,11 @@ namespace DynamicMenuProject.Controllers
                 mvm.Price = product.Price;
                 mvm.Description = product.Description;
                 mvm.isActive = product.isActive;
-                mvm.isDeleted = product.isDeleted;
                 mvm.CreatedAt = product.CreatedAt;
                 mvm.ModifiedAt = product.ModifiedAt;
                 mvm.Image = product.Image;
                 mvm.SubCategoryId = product.SubCategoryId;
+                mvm.CategoryId = product.CategoryId;
             }
             return View(mvm);
         }
@@ -137,7 +136,6 @@ namespace DynamicMenuProject.Controllers
                     product.Price = model.Price;
                     product.Description = model.Description;
                     product.isActive = model.isActive;
-                    product.isDeleted = model.isDeleted;
                     //product.CreatedAt = model.CreatedAt;
                     product.ModifiedAt = DateTime.Now;
                     product.SubCategoryId = model.SubCategoryId;

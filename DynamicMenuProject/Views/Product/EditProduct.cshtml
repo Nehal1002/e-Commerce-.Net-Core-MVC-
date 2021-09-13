@@ -50,11 +50,6 @@
                         <input asp-for="isActive" class="form-control" placeholder="isActive">
                         <span asp-validation-for="isActive" class="text-danger"></span>
                     </div>
-                    <div class="form-group">
-                        <label asp-for="isDeleted"></label>
-                        <input asp-for="isDeleted" class="form-control" placeholder="isActive">
-                        <span asp-validation-for="isDeleted" class="text-danger"></span>
-                    </div>
                     @*<div class="form-group">
                             <label asp-for="ModifiedAt"></label>
                             <input asp-for="ModifiedAt" class="form-control" placeholder="isActive">
@@ -91,6 +86,57 @@
     <partial name="_ValidationScriptsPartial" />
     <script>
         $(function () {
+            
+            // load subcategory
+                debugger;
+            $.ajax({
+                url: '/Home/Category',
+                type: 'GET',
+                async: false,
+                data: {
+                            ProductId: @Model.ProductId
+                },
+                dataType: 'json',
+                //contentType: 'application/json',
+                error: function (xhr) {
+                    alert('Error: ' + xhr);
+                },
+                success: function (result) {
+                    $.each(result, function (data, value) {
+                        $("#CategoryId").append($("<option></option>").val(value.value).html(value.text));
+                    })
+                    $("#CategoryId").val(@Model.CategoryId);
+
+                      
+                    // load category
+                    $.ajax({
+                        url: '/Home/GetSubCategoryByCategory',
+                        type: 'GET',
+                        async: true,
+                        data: {
+                            CategoryId: @Model.CategoryId
+                },
+                        dataType: 'json',
+                        //contentType: 'application/json',
+                        error: function (xhr) {
+                            alert('Error: ' + xhr);
+                        },
+                        success: function (result) {
+                            //alert(result);
+                            //$("#StateId").append($("<option>" + "Select State" + "</option>"));
+                            $.each(result, function (data, value) {
+                                $("#SubCategoryId").append($("<option></option>").val(value.value).html(value.text));
+                                $("#SubCategoryId").val(@Model.SubCategoryId);
+                            });
+                        }
+                    });
+                },
+            });
+
+
+          
+
+
             $.ajax({
                 url: '/Product/Category',
                 type: 'GET',

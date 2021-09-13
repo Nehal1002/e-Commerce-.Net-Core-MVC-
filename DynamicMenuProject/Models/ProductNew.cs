@@ -28,12 +28,13 @@ namespace DynamicMenuProject.Models
         [NotMapped]
         public IFormFile ImageFile { get; set; }
         public bool isActive { get; set; }
-        public bool isDeleted { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
 
         [Required(ErrorMessage = "Sub Category is required.")]
         public int SubCategoryId { get; set; }
+
         public string UserId { get; set; }
+        public int CategoryId { get; set; }
     }
 }
