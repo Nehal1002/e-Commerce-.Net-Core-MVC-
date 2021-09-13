@@ -208,44 +208,96 @@ namespace DynamicMenuProject.Controllers
             return Json(subCategory);
         }
 
+        //public IActionResult ManageProductOrders()
+        //{
+        //    List<RequestedProductsViewModel> listOrder = new List<RequestedProductsViewModel>();
+        //    var userId = _userManager.GetUserId(HttpContext.User);
+        //    //var od = _context.OrderDetailsNew.ToList();
+        //    if (userId != null)
+        //    {
+        //        var products = (from a in _context.ProductNew where a.UserId==userId
+        //                        join b in _context.OrderDetailsNew on a.ProductId equals b.ProductId
+        //                        join o in _context.OrderNew on b.OrderId equals o.OrderId
+        //                        select new RequestedProductsViewModel
+        //                        {
+        //                            ProductId = b.ProductId,
+        //                            ProductName = a.ProductName,
+        //                            Image = a.Image
+        //                        });
+        //        listOrder = products.ToList();
+
+        //        foreach(RequestedProductsViewModel item in listOrder)
+        //        {
+        //            var orderDetail = (from a in _context.OrderNew
+        //                               join o in _context.OrderDetailsNew on a.OrderId equals o.OrderId
+        //                               //join b in _context.ProductNew on o.ProductId equals b.ProductId
+        //                               //where b.UserId == userId
+        //                               select new OrderDtlViewModel
+        //                               {
+        //                                   CustomerId = a.CustomerId,
+        //                                   //CustomerName = b.ProductName,
+        //                                   Price = o.Price,
+        //                                   Quantity = o.Quantity,
+        //                                   OrderId = a.OrderId,
+        //                                   OrderStatus = a.OrderStatus,
+        //                                   OrderDate = a.OrderDate
+        //                               });
+        //        }
+               
+                
+        //    }
+        //    return View(listOrder);
+        //}
+
         public IActionResult ManageProductOrders()
         {
             List<RequestedProductsViewModel> listOrder = new List<RequestedProductsViewModel>();
             var userId = _userManager.GetUserId(HttpContext.User);
-            var od = _context.OrderDetailsNew.ToList();
             if (userId != null)
             {
-                var products = (from a in _context.OrderDetailsNew
-                                join b in _context.ProductNew on a.ProductId equals b.ProductId
-                                join o in _context.OrderNew on a.OrderId equals o.OrderId
-                                select new RequestedProductsViewModel
-                                {
-                                    ProductId = b.ProductId,
-                                    ProductName = b.ProductName,
-                                    Image = b.Image
-                                });
-                RequestedProductsViewModel r = new RequestedProductsViewModel();
-                List<OrderDtlViewModel> odx = new List<OrderDtlViewModel>();
-                var orderDetail = (from a in _context.OrderDetailsNew
-                                   join b in _context.ProductNew on a.ProductId equals b.ProductId
-                                   join o in _context.OrderNew on a.OrderId equals o.OrderId
-                                   select new OrderDtlViewModel
-                                   {
-                                       CustomerId =o.CustomerId,
-                                       //CustomerName = b.ProductName,
-                                       Price = a.Price,
-                                       Quantity=a.Quantity,
-                                       OrderId=o.OrderId,
-                                       OrderStatus=o.OrderStatus,
-                                       OrderDate=o.OrderDate
-                                   });
-                
-                r.orderDtl = odx;
-                listOrder.Add(r);
+                var products = _context.ProductNew.Where(x => x.UserId == userId).ToList();
+                foreach (var product in products)
+                {
+                    RequestedProductsViewModel odr = new RequestedProductsViewModel();
+                    odr.ProductId = product.ProductId;
+                    odr.ProductName = product.ProductName;
+                    odr.Image = product.Image;
+
+                    var orderDetail = (from o in _context.OrderDetailsNew.Where(x => x.ProductId == odr.ProductId)
+                                       join s in _context.OrderNew on o.OrderId equals s.OrderId
+                                       select new OrderDtlViewModel
+                                       {
+                                           CustomerId = s.CustomerId,
+                                           //CustomerName = b.ProductName,
+                                           Price = o.Price,
+                                           Quantity = o.Quantity,
+                                           OrderId = s.OrderId,
+                                           OrderStatus = s.OrderStatus,
+                                           OrderDate = s.OrderDate,
+                                       }).ToList();
+                    var countOfOrders = orderDetail.Count();
+                    //OrderDtlViewModel g = new OrderDtlViewModel();
+                    List<OrderDtlViewModel> od = new List<OrderDtlViewModel>();
+
+                    foreach (var order in orderDetail)
+                    {
+                        OrderDtlViewModel orderDlItem = new OrderDtlViewModel();
+                        orderDlItem.CustomerId = order.CustomerId;
+                        orderDlItem.Price = order.Price;
+                        orderDlItem.Quantity = order.Quantity;
+                        orderDlItem.OrderId = order.OrderId;
+                        orderDlItem.OrderStatus = order.OrderStatus;
+                        orderDlItem.OrderDate = order.OrderDate;
+                        od.Add(orderDlItem);
+
+                    }
+                   
+                    odr.orderDtl = od;
+                    listOrder.Add(odr);
+                }
             }
             return View(listOrder);
         }
-
     }
 
 

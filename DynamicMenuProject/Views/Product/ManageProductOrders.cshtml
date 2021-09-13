@@ -1,55 +1,55 @@
-﻿
-@*@model IEnumerable<DynamicMenuProject.View_Models.RequestedProductsViewModel>
+﻿@model List<DynamicMenuProject.View_Models.RequestedProductsViewModel>
+
 @{
     ViewData["Title"] = "ManageProductOrders";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<script src="~/lib/jquery/dist/jquery.js"></script>
-<script src="~/js/ckeditor/ckeditor.js"></script>
-<link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
-<h1>Manage Product Orders</h1>
 
-<table class="table table-striped" id="MyDataTable">
-    <thead>
-        <tr>
-            <th>Product Id</th>
-            <th>Product Name</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Customer Id</th>
-            <th>Order Id</th>
-            <th>Order Status</th>
-            <th>Order Date</th>
-        </tr>
-    </thead>
-    <tbody>
-        {int index = 1;}
-        @foreach (var product in Model)
-        {
+<h1>MyOrders</h1>
+@foreach (var item in Model)
+{
+    @item.ProductId<br />
+    @item.ProductName<br />
+    @if (item.Image != null)
+    {
+        <img style="width:50px;height:50px; object-fit:cover" src="~/Images/@item.Image">
+    }
+
+
+    @*Total : @ViewBag.cartTotal*@
+    <table class="table table-striped" id="MyDataTable">
+        <thead>
             <tr>
-                <td>@product.ProductId</td>
-                <td>@product.ProductName</td>
-                <td>@product.ProductPrice</td>
-                <td>@product.Quantity</td>
-                <td>@product.CustomerId</td>
-                @*<td>@product.CustomerName</td>
-                <td>@product.OrderId</td>
-                <td>@product.OrderStatus</td>
-                <td>@product.OrderDate</td>
+                <th>CustomerId</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>OrderId</th>
+                <th>Order Status</th>
+                <th>Order Date</th>
+                <th>Sub Total</th>
             </tr>
-            //index++;
-        }
-    </tbody>
-</table>
-@section scripts{
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.25/af-2.3.7/datatables.min.css" />
-    <script src="~/js/CustomScript.js"></script>
-    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.25/af-2.3.7/datatables.min.js"></script>
-    <script>
-$(document).ready(function () {
-            $("#MyDataTable").DataTable();
-            CKEDITOR.replace('#Description');
+        </thead>
+        <tbody>
+            @foreach (var product in item.orderDtl)
+            {
+                <tr>
+                    <td>@product.CustomerId</td>
+                    @*<td>
+                        @product.CustomerName
+                    </td>*@
+                    <td>@product.Price</td>
+                    <td>
+                        @product.Quantity
+                    </td>
+                    <td>@product.OrderId</td>
+                    <td>
+                        @product.OrderStatus
+                    </td>
+                    <td>@product.OrderDate</td>
+                    <td>@Html.Raw(product.Price*product.Quantity)</td>
+                </tr>
+            }
+        </tbody>
 
-        }
-        )</script>
-}*@
+    </table>
+}
