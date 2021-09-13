@@ -1,4 +1,5 @@
 ﻿using DynamicMenuProject.Data;
+using DynamicMenuProject.Helpers;
 using DynamicMenuProject.Models;
 using DynamicMenuProject.View_Models;
 using Microsoft.AspNetCore.Authorization;
@@ -13,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace DynamicMenuProject.Controllers
 {
+    [AuthorizeActionFilter]
     public class ProductController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -208,47 +210,7 @@ namespace DynamicMenuProject.Controllers
             return Json(subCategory);
         }
 
-        //public IActionResult ManageProductOrders()
-        //{
-        //    List<RequestedProductsViewModel> listOrder = new List<RequestedProductsViewModel>();
-        //    var userId = _userManager.GetUserId(HttpContext.User);
-        //    //var od = _context.OrderDetailsNew.ToList();
-        //    if (userId != null)
-        //    {
-        //        var products = (from a in _context.ProductNew where a.UserId==userId
-        //                        join b in _context.OrderDetailsNew on a.ProductId equals b.ProductId
-        //                        join o in _context.OrderNew on b.OrderId equals o.OrderId
-        //                        select new RequestedProductsViewModel
-        //                        {
-        //                            ProductId = b.ProductId,
-        //                            ProductName = a.ProductName,
-        //                            Image = a.Image
-        //                        });
-        //        listOrder = products.ToList();
-
-        //        foreach(RequestedProductsViewModel item in listOrder)
-        //        {
-        //            var orderDetail = (from a in _context.OrderNew
-        //                               join o in _context.OrderDetailsNew on a.OrderId equals o.OrderId
-        //                               //join b in _context.ProductNew on o.ProductId equals b.ProductId
-        //                               //where b.UserId == userId
-        //                               select new OrderDtlViewModel
-        //                               {
-        //                                   CustomerId = a.CustomerId,
-        //                                   //CustomerName = b.ProductName,
-        //                                   Price = o.Price,
-        //                                   Quantity = o.Quantity,
-        //                                   OrderId = a.OrderId,
-        //                                   OrderStatus = a.OrderStatus,
-        //                                   OrderDate = a.OrderDate
-        //                               });
-        //        }
-               
-                
-        //    }
-        //    return View(listOrder);
-        //}
-
+        
         public IActionResult ManageProductOrders()
         {
             List<RequestedProductsViewModel> listOrder = new List<RequestedProductsViewModel>();
@@ -276,7 +238,6 @@ namespace DynamicMenuProject.Controllers
                                            OrderDate = s.OrderDate,
                                        }).ToList();
                     var countOfOrders = orderDetail.Count();
-                    //OrderDtlViewModel g = new OrderDtlViewModel();
                     List<OrderDtlViewModel> od = new List<OrderDtlViewModel>();
 
                     foreach (var order in orderDetail)
