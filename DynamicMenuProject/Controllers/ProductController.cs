@@ -237,7 +237,7 @@ namespace DynamicMenuProject.Controllers
                                            OrderStatus = s.OrderStatus,
                                            OrderDate = s.OrderDate,
                                        }).ToList();
-                    var countOfOrders = orderDetail.Count();
+                    ViewBag.countOfOrders = orderDetail.Count();
                     List<OrderDtlViewModel> od = new List<OrderDtlViewModel>();
 
                     foreach (var order in orderDetail)

@@ -137,13 +137,14 @@
                     @RenderBody()
 
                 </main>
-                @*@await Component.InvokeAsync("FeaturedProducts")*@
+                
             </div>
             <div class="col-sm-3" style="background-color:white;">@await Component.InvokeAsync("News")</div>
         </div>
     </div>
 
     <footer class="border-top footer text-muted">
+        @*@await Component.InvokeAsync("FeaturedProducts")*@
         <div class="container">
             &copy; 2021 - DummyProject - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>

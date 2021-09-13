@@ -35,8 +35,7 @@ namespace DynamicMenuProject.ViewComponents
             //                  Image = product.Image,
             //              }).ToList();
 
-            //return View(model);
-
+            ////return View(model);
             ViewBag.product = _context.ProductNew.ToList();
             return View();
         }
