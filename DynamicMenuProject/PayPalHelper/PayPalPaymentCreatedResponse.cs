@@ -19,7 +19,7 @@ namespace DynamicMenuProject.PayPalHelper
         //public Guid UniqueId { get; set; }
         //public string description { get; set; }
         //public string invoice_number { get; set; }
-        public Guid custom { get; set; }
+        public string custom { get; set; }
 
         public class Payer
         {
@@ -33,7 +33,7 @@ namespace DynamicMenuProject.PayPalHelper
             public Amount amount { get; set; }
             //public string description { get; set; }
             //public string invoice_number { get; set; }
-            public Guid custom { get; set; }
+            public string custom { get; set; }
             public /*object[]*/ List<object> related_resources { get; set; }
 
         }

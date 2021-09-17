@@ -67,7 +67,7 @@ namespace DynamicMenuProject.PayPalHelper
 
             //public string description { get; set; }
             //public string invoice_number { get; set; }
-            public Guid custom { get; set; }
+            public string custom { get; set; }
         }
 
         public class Amount

@@ -25,7 +25,7 @@ namespace DynamicMenuProject.PayPalHelper
         {
             configuration = _configuration;
         }
-        public async Task<string> getRedirectURLToPayPal(double total, string currency, Guid UniqueId)
+        public async Task<string> getRedirectURLToPayPal(double total, string currency, string orderId)
         {
             try
             {
@@ -33,7 +33,7 @@ namespace DynamicMenuProject.PayPalHelper
                 {
                     HttpClient http = GetPaypalHttpClient();
                     PayPalAccessToken accessToken = await GetPayPalAccessTokenAsync(http);
-                    PayPalPaymentCreatedResponse createdPayment = await CreatePaypalPaymentAsync(http, accessToken, total, currency, UniqueId);
+                    PayPalPaymentCreatedResponse createdPayment = await CreatePaypalPaymentAsync(http, accessToken, total, currency, orderId);
                     return createdPayment.links.First(x => x.rel == "approval_url").href;
                 }).Result;
 
@@ -90,7 +90,7 @@ namespace DynamicMenuProject.PayPalHelper
             return accessToken;
         }
 
-        private async Task<PayPalPaymentCreatedResponse> CreatePaypalPaymentAsync(HttpClient http, PayPalAccessToken accessToken, double total, string currency, Guid UniqueId)
+        private async Task<PayPalPaymentCreatedResponse> CreatePaypalPaymentAsync(HttpClient http, PayPalAccessToken accessToken, double total, string currency, string orderId)
         {
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "v1/payments/payment");
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken.access_token);
@@ -113,7 +113,7 @@ namespace DynamicMenuProject.PayPalHelper
                             total=total,
                             currency=currency
                         },
-                        custom=UniqueId, // cust id
+                        custom=orderId, // cust id
                          //description= "The payment transaction description.",
                          //  invoice_number= "ee0044",
                          //  custom= "ee0044",

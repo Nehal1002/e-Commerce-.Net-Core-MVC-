@@ -8,7 +8,7 @@ namespace DynamicMenuProject.Models
     public class Payment
     {
         public int Id { get; set; }
-        public Guid UniqueOrderId { get; set; }
+        public string CustomerId { get; set; }
         public string TransactionId { get; set; }
         public string Intent { get; set; }
         public string CartId { get; set; }
@@ -18,5 +18,6 @@ namespace DynamicMenuProject.Models
         public string TransactionFee { get; set; }
         public string SaleId { get; set; }
         public DateTime CreatedAt { get; set; }
+        public int OrderId { get; set; }
     }
 }

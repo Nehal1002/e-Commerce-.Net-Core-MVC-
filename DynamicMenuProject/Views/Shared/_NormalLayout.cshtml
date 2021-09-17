@@ -70,7 +70,8 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="CartNew" asp-action="CartNew">
                                     @await Component.InvokeAsync("CartCount")
-                                </a>
+                            @*@Html.ActionLink("CartNew", "Index","") <span id="cartItem"></span>*@
+                            </a>
                             </li>
 
                             <li class="nav-item">
@@ -173,8 +174,24 @@
 </html>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
-<script>
-    function count() {
+@*<script>*@
+    <script>
+        $(document).ready(function () {
+            //alert("HEllo");
+            $("#cartItem").text("");
+            $.get("/CartNew/CartItem", null, function (data) {
+                if (data != false) {
+                    $("#cartItem").text(data);
+                    $("#cartItem").addClass("cartItemStyle");
+                }
+                else {
+                    $("#cartItem").text();
+                    $("#cartItem").removeClass("cartItemStyle");
+                }
+            });
+        });
+    </script>
+    @*function count() {
 
         debugger;
         $.ajax({
@@ -196,4 +213,4 @@
             // processData: false
         });
     }
-</script>
+</script>*@

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using DynamicMenuProject.Data;
 using DynamicMenuProject.Models;
 using DynamicMenuProject.PayPalHelper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Rotativa.AspNetCore;
@@ -18,11 +19,13 @@ namespace DynamicMenuProject.Controllers
         private IConfiguration configuration { get; }
 
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public CartController(IConfiguration _configuration, ApplicationDbContext context)
+        public CartController(IConfiguration _configuration, ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             configuration = _configuration;
             _context = context;
+            _userManager = userManager;
         }
 
 
@@ -41,9 +44,9 @@ namespace DynamicMenuProject.Controllers
         //[Route("checkout")]
         public async Task<IActionResult> Checkout(double total)
         {
-            Guid g = Guid.NewGuid();
+            var g = _userManager.GetUserId(HttpContext.User);
             var payPalAPI = new PayPalAPI(configuration);
-            string url = await payPalAPI.getRedirectURLToPayPal(total, "USD", g);
+            string url = await payPalAPI.getRedirectURLToPayPal(total, "USD",g);
 
             return Redirect(url);
         }

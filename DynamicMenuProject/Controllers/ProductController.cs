@@ -228,7 +228,7 @@ namespace DynamicMenuProject.Controllers
                                        select new OrderDtlViewModel
                                        {
                                            CustomerId = s.CustomerId,
-                                           //CustomerName = b.ProductName,
+                                           CustomerName = _context.Users.Where(u => u.Id == s.CustomerId).FirstOrDefault().UserName,
                                            Price = o.Price,
                                            Quantity = o.Quantity,
                                            OrderId = s.OrderId,
@@ -242,6 +242,7 @@ namespace DynamicMenuProject.Controllers
                     {
                         OrderDtlViewModel orderDlItem = new OrderDtlViewModel();
                         orderDlItem.CustomerId = order.CustomerId;
+                        orderDlItem.CustomerName = order.CustomerName;
                         orderDlItem.Price = order.Price;
                         orderDlItem.Quantity = order.Quantity;
                         orderDlItem.OrderId = order.OrderId;
@@ -256,6 +257,8 @@ namespace DynamicMenuProject.Controllers
                 }
             }
             return View(listOrder);
+
+           
         }
     }
 

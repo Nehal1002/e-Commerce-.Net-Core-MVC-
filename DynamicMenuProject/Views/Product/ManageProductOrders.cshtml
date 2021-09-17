@@ -8,48 +8,56 @@
 <h1>MyOrders</h1>
 @foreach (var item in Model)
 {
-    @item.ProductId<br />
-    @item.ProductName<br />
-    @if (item.Image != null)
-    {
-        <img style="width:50px;height:50px; object-fit:cover" src="~/Images/@item.Image">
-    }
-
-
-    @*Total : @ViewBag.cartTotal*@
-    <table class="table table-striped" id="MyDataTable">
-        <thead>
-            <tr>
-                <th>CustomerId</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>OrderId</th>
-                <th>Order Status</th>
-                <th>Order Date</th>
-                <th>Sub Total</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var product in item.orderDtl)
+    <div class="card border-info mb-3" style="max-width: 50rem;">
+        <div class="card-header" align="center">Product Id: @item.ProductId</div>
+        <div class="card-body text-info">
+            <h5 class="card-title">Product Name:  @item.ProductName</h5>
+            <h5 class="card-title"> 
+            @if (item.Image != null)
             {
-                <tr>
-                    <td>@product.CustomerId</td>
-                    @*<td>
-                        @product.CustomerName
-                    </td>*@
-                    <td>@product.Price</td>
-                    <td>
-                        @product.Quantity
-                    </td>
-                    <td>@product.OrderId</td>
-                    <td>
-                        @product.OrderStatus
-                    </td>
-                    <td>@product.OrderDate</td>
-                    <td>@Html.Raw(product.Price*product.Quantity)</td>
-                </tr>
+                <img style="width:50px;height:50px; object-fit:cover" src="~/Images/@item.Image">
             }
-        </tbody>
+            </h5>
+            <p class="card-text">
 
-    </table>
+                @*Total : @ViewBag.cartTotal*@
+                <table class="table table-striped" id="MyDataTable">
+                    <thead>
+                        <tr>
+                            <th>Customer Name</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            @*<th>Order Id</th>*@
+                            <th>Order Status</th>
+                            <th>Order Date</th>
+                            <th>Sub Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var product in item.orderDtl)
+                        {
+                            <tr>
+                                @*<td>@product.CustomerId</td>*@
+                                <td>
+                                            @product.CustomerName
+                                    </td>
+                                <td>@product.Price</td>
+                                <td>
+                                    @product.Quantity
+                                </td>
+                                @*<td>@product.OrderId</td>*@
+                                <td>
+                                    @product.OrderStatus
+                                </td>
+                                <td>@product.OrderDate</td>
+                                <td>@Html.Raw(product.Price * product.Quantity)</td>
+                            </tr>
+                        }
+                    
+                    </tbody>
+
+                </table>
+            </p>
+        </div>
+    </div>
 }

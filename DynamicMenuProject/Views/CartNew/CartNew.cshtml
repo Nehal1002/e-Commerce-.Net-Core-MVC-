@@ -30,7 +30,7 @@ Total : @ViewBag.cartTotal
                     }
                 </td>
                 <td>@product.Price</td>
-                <td>
+                <td width="500px">
                     <a asp-controller="CartNew" asp-action="SubtractQuantity" asp-route-Quantity="@product.Quantity"
                        asp-route-productId="@product.ProductId" class="btn btn-primary">-</a>
                     @product.Quantity

@@ -14,6 +14,5 @@ namespace DynamicMenuProject.Models
         public DateTime OrderDate { get; set; }
         public Decimal TotalAmount { get; set; }
         public string OrderStatus { get; set; }
-        public Guid UniqueId{ get; set; }
     }
 }
