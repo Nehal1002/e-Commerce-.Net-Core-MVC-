@@ -18,13 +18,54 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <link href="~/css/bootstrap-sidermenu.css" rel="stylesheet" />
     <script src="~/js/bootstrap-sidermenu.js"></script>
-    </head>
-    <div class="container-fluid">
-        <div class="row">
-            @{ foreach (var firstItem in Model)
+
+
+    @*<!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <!-- Font Awesome 4-->
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Sidebar Accordion CSS -->
+    <link href="~/css/sidebar-accordion.css" rel="stylesheet" />
+    <!-- Sidebar Accordion JS -->
+    <script src="~/js/sidebar-accordion.js"></script>*@
+    
+</head>
+<div class="container-fluid">
+    <div class="row">
+        @{ foreach (var firstItem in Model)
+            {
+                @if (firstItem.Path == null)
                 {
-                    @if (firstItem.Path == null)
+                    <ul class="menu-siderbar nav flex-column">
+                        <li class="nav-item open">
+                            <a href="@firstItem.Path/Home/Products/@firstItem.Id" class="nav-link nav-link-parent">
+                                <i class="menu-icon fa fa-th"></i> @firstItem.CategoryName
+                            </a>
+                            <ul class="menu-siderbar-child nav flex-column">
+                                @foreach (var secondItem in (Model.Where(s => s.ParentId == firstItem.Id).ToList()))
+                                {
+                                    <li class="nav-item">
+                                        <a href="@secondItem.Path/@secondItem.Id" class="nav-link">
+
+                                            <p>@secondItem.CategoryName</p>
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </li>
+                    </ul>
+                }
+            }
+        }
+        @*@{
+                foreach (var item in Model)
+                {
+
+                    foreach (var firstItem in (Model.Where(s => s.CategoryGrpId == item.FirstOrDefault().CategoryGrpId).ToList()))
                     {
+                        @if (string.IsNullOrEmpty(firstItem.Path))
+                        {
+
                             <ul class="menu-siderbar nav flex-column">
                                 <li class="nav-item open">
                                     <a href="@firstItem.Path/Home/Products/@firstItem.Id" class="nav-link nav-link-parent">
@@ -35,50 +76,56 @@
                                         {
                                             <li class="nav-item">
                                                 <a href="@secondItem.Path/@secondItem.Id" class="nav-link">
-
-                                                    <i class="far fa-circle nav-icon"></i>
-                                                    <p>@secondItem.CategoryName</p>
+                                                    <i class="menu-icon fa fa-bolt"></i> @secondItem.CategoryName
                                                 </a>
-                                                </li>
+                                            </li>
                                         }
-                                        </ul>
+                                    </ul>
                                 </li>
                             </ul>
                         }
-                }
-            }
-            @*@{
-            foreach (var item in Model)
-            {
-
-                foreach (var firstItem in (Model.Where(s => s.CategoryGrpId == item.FirstOrDefault().CategoryGrpId).ToList()))
-                {
-                    @if (string.IsNullOrEmpty(firstItem.Path))
-                    {
-
-                        <ul class="menu-siderbar nav flex-column">
-                            <li class="nav-item open">
-                                <a href="@firstItem.Path/Home/Products/@firstItem.Id" class="nav-link nav-link-parent">
-                                    <i class="menu-icon fa fa-th"></i> @firstItem.CategoryName
-                                </a>
-                                <ul class="menu-siderbar-child nav flex-column">
-                                    @foreach (var secondItem in (Model.Where(s => s.ParentId == firstItem.Id).ToList()))
-                                    {
-                                        <li class="nav-item">
-                                            <a href="@secondItem.Path/@secondItem.Id" class="nav-link">
-                                                <i class="menu-icon fa fa-bolt"></i> @secondItem.CategoryName
-                                            </a>
-                                        </li>
-                                    }
-                                </ul>
-                            </li>
-                        </ul>
                     }
                 }
+            }*@
+    @*</div>
+</div>*@
+
+
+
+@*<div class="contenedor-menu">
+    @{ 
+        foreach (var firstItem in Model)
+        {
+            @if (firstItem.Path == null)
+            {
+                <ul class="menu">
+                    <li class="nav-item">
+                        <a href="@firstItem.Path/Home/Products/@firstItem.Id">
+                            <i class="menu-icon fa fa-th"></i> @firstItem.CategoryName
+                        </a>
+                        <ul class="menu">
+                            @foreach (var secondItem in (Model.Where(s => s.ParentId == firstItem.Id).ToList()))
+                            {
+                                <li class="nav-item">
+                                    <a href="@secondItem.Path/@secondItem.Id" class="nav-link">
+
+                                        <p>@secondItem.CategoryName</p>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+                </ul>
             }
-        }*@
-        </div>
-    </div>
+            }
+        }
+</div>*@
+
+
+
+
+
+
 </html>
 
 

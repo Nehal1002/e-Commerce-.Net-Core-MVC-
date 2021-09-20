@@ -300,13 +300,27 @@
             },
             success: function (result) {
                 alert(result);
+                $.get("/CartNew/CartItem", null, function (data) {
+                    if (data != false) {
+                        $("#cartItem").text(data);
+                        $("#cartItem").addClass("cartItemStyle");
+                    }
+                    else {
+                        $("#cartItem").text();
+                        $("#cartItem").removeClass("cartItemStyle");
+                    }
+                });
             },
             //async: true,
             // processData: false
         });
     }
     
-    
+    //$(document).ready(function () {
+    //    //alert("HEllo");
+    //    $("#cartItem").text("");
+    //    
+    //});
 </script>
 
 

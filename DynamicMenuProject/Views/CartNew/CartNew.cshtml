@@ -6,7 +6,7 @@
 
 <h1>Review your cart</h1>
 Total : @ViewBag.cartTotal
-<a asp-controller="CartNew" asp-action="CreateOrder">Checkout>></a>
+<a asp-controller="CartNew" asp-action="CreateOrder" class="btn btn-primary float-right">Checkout>></a>
 <table class="table table-striped" id="MyDataTable">
     <thead>
         <tr>
@@ -22,7 +22,7 @@ Total : @ViewBag.cartTotal
         @foreach (var product in Model)
         {
             <tr>
-                <td>@product.ProductName</td>
+                <td width="200px">@product.ProductName</td>
                 <td>
                     @if (product.Image != null)
                     {
@@ -30,7 +30,7 @@ Total : @ViewBag.cartTotal
                     }
                 </td>
                 <td>@product.Price</td>
-                <td width="500px">
+                <td width="150px">
                     <a asp-controller="CartNew" asp-action="SubtractQuantity" asp-route-Quantity="@product.Quantity"
                        asp-route-productId="@product.ProductId" class="btn btn-primary">-</a>
                     @product.Quantity
@@ -38,7 +38,7 @@ Total : @ViewBag.cartTotal
                        asp-route-productId="@product.ProductId" class="btn btn-primary">+</a>
                 </td>
                 <td>@product.TotalAmount</td>
-                <td><a asp-controller="CartNew" asp-action="RemoveFromCart" asp-route-productId="@product.ProductId">Remove From Cart</a></td>
+                <td width="200px"><a asp-controller="CartNew" asp-action="RemoveFromCart" asp-route-productId="@product.ProductId" class="btn btn-danger">Remove From Cart</a></td>
                 @*<td><button type="submit" onclick="addtocart(@product.ProductId)">Remove From Cart</button></td>*@
             </tr>
         }
