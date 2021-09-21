@@ -115,6 +115,8 @@ namespace DynamicMenuProject.Areas.Identity.Pages.Account
             [Required]
             [Display(Name = "Address 2")]
             public string Address2 { get; set; }
+
+            public string Role { get; set; }
         }
 
         public void OnGet(string returnUrl = null)
@@ -148,9 +150,11 @@ namespace DynamicMenuProject.Areas.Identity.Pages.Account
                     CityId=Input.CityId,
                     ProfilePicture=Input.ProfilePicture,
                     Address1=Input.Address1,
-                    Address2=Input.Address2
+                    Address2=Input.Address2,
+                    Role=Input.Role
                 };
 
+                
                 if (Input.ProfilePictureFile != null)
                 {
                     string wwwRootPath = _hostEnvironment.WebRootPath;
@@ -174,6 +178,8 @@ namespace DynamicMenuProject.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+
+                    await _userManager.AddToRoleAsync(user, Input.Role);
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.Page(

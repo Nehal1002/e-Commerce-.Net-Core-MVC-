@@ -48,27 +48,6 @@ namespace DynamicMenuProject.Controllers
         }
 
         
-        //public IActionResult AddToCart()
-        //{
-        //    if (User.Identity.IsAuthenticated && User.IsInRole("Customer"))
-        //    {
-        //       // List<CartNewViewModel> lstmodel = new List<CartNewViewModel>();
-        //        var cart = new CartNew();
-        //        cart.UserId = _userManager.GetUserId(HttpContext.User);
-        //        var product = _context.ProductNew.Where(p => p.ProductId == Id);
-        //        cart.ProductId = product.FirstOrDefault().ProductId;
-        //        cart.Quantity = 1;
-        //        cart.TotalAmount = product.FirstOrDefault().Price;
-        //        _context.CartNew.Add(cart);
-        //        _context.SaveChanges();
-        //        return View();
-        //    }
-        //    else
-        //    {
-        //        return RedirectToAction("/Identity/Account/Login");
-        //    }
-        //}
-
         [AllowAnonymous]
         public IActionResult Products(int Id)
         {

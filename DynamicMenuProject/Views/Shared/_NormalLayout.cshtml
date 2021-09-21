@@ -53,7 +53,7 @@
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                    <img src="~/Images/Nehal's Shop (1).png" width="200px" height="50px" class="float-left" />
+                    <img src="~/Images/Nehal's Shop (1).png" width="200px" height="50px" class="float-lg-left" />
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -146,19 +146,22 @@
                 <partial name="_CookieConsentPartial" />
                 <main role="main" class="pb-3">
                     @RenderBody()
-
                 </main>
-                
+                @*<div>
+                        @await Component.InvokeAsync("FeaturedProducts")
+                    </div>*@
             </div>
             <div class="col-sm-3" style="background-color:white;">@await Component.InvokeAsync("News")</div>
         </div>
     </div>
 
-    <footer class="border-top footer text-muted">
-        @*@await Component.InvokeAsync("FeaturedProducts")*@
-        <div class="container">
-            &copy; 2021 - DummyProject - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer class="bg-light text-center text-lg-start">
+        <!-- Copyright -->
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+            &copy; 2021 - Nehal's Shop 
+            @*<a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-dark">Privacy</a>*@
         </div>
+        <!-- Copyright -->
     </footer>
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>

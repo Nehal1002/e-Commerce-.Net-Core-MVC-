@@ -644,5 +644,10 @@ namespace DynamicMenuProject.Controllers
         //    }
         //    return View();
         //}
+
+        public IActionResult Cancel()
+        {
+            return View();
+        }
     }
 }
